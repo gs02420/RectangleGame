@@ -5,10 +5,10 @@ const scoreElement = document.getElementById('score');
 let score = 0;
 let playerY = 150;
 let isJump  = false;
-let Enemys=[
-    new Obstical(50, 50, 0,0,2),
-    new Obstical(50, 50, 0,0,2)
-]
+let Enemys= [
+    new Obstical(50, 50, 50,50,2),
+    new Obstical(50, 50, 50,50,2)
+];
 function Obstical(width, height, x, y, speed){
   this.speed = speed;
   this.width = width;
@@ -58,7 +58,13 @@ function drawGame(){
 document.addEventListener('keydown',async (event) =>{
     if(event.code === "Space" && !isJump)
         isJump = true;
-        for(let i=0; i,20; i++) {playerY -= 5; await nextFrame();}
-        for(let i=0; i,20; i++) {playerY -= 5; await nextFrame();}
+        for(let i=0; i,20; i++) {
+        playerY -= 5;
+        await nextFrame();
+            }
+        for(let i=0; i,20; i++) {
+            playerY -= 5;
+            await nextFrame();
+        }
         isJump = false;
 });
