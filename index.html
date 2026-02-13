@@ -11,6 +11,75 @@
     <canvas id="gameCanvas" width="600" height="400"></canvas>
     <p id="score">Stability level = 0</p>
 
-    <script src="script.js"></script>
+    <script>const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const scoreElement = document.getElementById('score');
+
+let score = 0;
+let playerY = 150;
+let isJump  = false;
+let Enemys= [
+    new Obstical(50, 50, 50,50,2),
+    new Obstical(50, 50, 50,50,2)
+];
+function Obstical(width, height, x, y, speed){
+  this.speed = speed;
+  this.width = width;
+  this.height = height;
+  this.x = x;
+  this.y = y
+}
+const nextFrame = () => new Promise(requestAnimationFrame);
+
+function gameLoop(){
+    updateGame();
+
+    drawGame();
+
+    requestAnimationFrame(gameLoop);
+}
+async function delayFrames(frames) {
+  for (let i = 0; i < frames; i++) {
+    await nextFrame();
+  }
+}
+
+function updateGame(){
+    Enemys.forEach( enemy => {
+        enemy.x -= enemy.speed;
+        if (enemy.x < -50) enemy.x = canvas.width + Math.random * 300;
+});
+    scoreElement.textContent = `stability level = ${score}`;
+
+    if (isJump){
+        playerY -= 10
+    }
+}
+
+function drawGame(){
+    ctx.clearRect(0, 0,canvas.width, canvas.height);
+
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(50, playerY, 50, 50);
+
+    ctx.fillStyle = 'red';
+    Enemys.forEach( enemy => {
+
+        ctx.fillRect(enemy.x,enemy.y, enemy.width, enemy.height);
+    });
+}
+document.addEventListener('keydown',async (event) =>{
+    if(event.code === "Space" && !isJump)
+        isJump = true;
+        for(let i=0; i,20; i++) {
+        playerY -= 5;
+        await nextFrame();
+            }
+        for(let i=0; i,20; i++) {
+            playerY -= 5;
+            await nextFrame();
+        }
+        isJump = false;
+});</script>
 </body>
 </html>
