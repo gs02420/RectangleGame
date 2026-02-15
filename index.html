@@ -18,6 +18,7 @@ const scoreElement = document.getElementById('score');
 let score = 0;
 let playerY = 150;
 let isJump  = false;
+let playerSize;
 const gravity = 0.5;
 let velocityY = 0;
 let Enemys= [
@@ -29,7 +30,7 @@ function Obstical(width, height, x, y, speed){
   this.width = width;
   this.height = height;
   this.x = x;
-  this.y = y
+  this.y = canvas.height - height;
 }
 const nextFrame = () => new Promise(requestAnimationFrame);
 
@@ -69,7 +70,7 @@ function updateGame(){
                     }
     if(
         50 < enemy.x + enemy.width &&
-        50 + playerSize > enemy.x && playerY < enemy.y + enemy.y + enemy.height && playerY + playerSize > enemy.y
+        50 + playerSize > enemy.x && playerY < enemy.y + enemy.height && playerY + playerSize > enemy.y
     ) {
         score = 0;
         console.log ("Collision",score)
@@ -103,10 +104,13 @@ function gameLoop(){
     requestAnimationFrame(gameLoop);
 }
 document.addEventListener('keydown',(event) =>{
-    if(event.code === "Space" && !isJump)
+    if(event.code === "Space" && !isJump){
         isJump = true;
 
         velocityY = -10;
-});</script>
+    }
+});
+gameLoop();
+</script>
 </body>
 </html>
