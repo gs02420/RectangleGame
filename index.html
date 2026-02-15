@@ -18,9 +18,11 @@ const scoreElement = document.getElementById('score');
 let score = 0;
 let playerY = 150;
 let isJump  = false;
+const gravity = 0.5;
+let velocityY = 0;
 let Enemys= [
-    new Obstical(50, 50, 50,50,2),
-    new Obstical(50, 50, 50,50,2)
+    new Obstical(50, 50, canvas.width,canvas.height - 50,2),
+    new Obstical(50, 50, canvas.width + 300,canvas.height - 50,2)
 ];
 function Obstical(width, height, x, y, speed){
   this.speed = speed;
@@ -31,6 +33,68 @@ function Obstical(width, height, x, y, speed){
 }
 const nextFrame = () => new Promise(requestAnimationFrame);
 
+
+async function delayFrames(frames) {
+  for (let i = 0; i < frames; i++) {
+    await nextFrame();
+  }
+}
+function bottomLine(){
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height - 1);
+    ctx.lineTo(canvas.width, canvas.height - 1);
+    ctx.stroke();
+}
+function updateGame(){
+            if (isJump) {
+            velocityY += gravity;
+            playerY += velocityY;
+
+            if (playerY >= canvas.height - playerSize) {
+                playerY = canvas.height - playerSize;
+                isJump = false;
+                velocityY = 0;
+            }
+        } else {
+             playerY = canvas.height - playerSize;
+        }
+
+    Enemys.forEach( enemy => {
+        enemy.x -= enemy.speed;
+                    if (enemy.x < -enemy.width) {
+                enemy.x = canvas.width + Math.random() * 200 + 100;
+                score++;
+                    }
+    if(
+        50 < enemy.x + enemy.width &&
+        50 + playerSize > enemy.x && playerY < enemy.y + enemy.y + enemy.height && playerY + playerSize > enemy.y
+    ) {
+        score = 0;
+        console.log ("Collision",score)
+    }
+});
+    scoreElement.textContent = `stability level = ${score}`;
+
+
+}
+
+function drawGame(){
+    ctx.clearRect(0, 0,canvas.width, canvas.height);
+
+    bottomLine();
+
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(50, playerY, playerSize, playerSize);
+
+ 
+    ctx.fillStyle = 'red';
+    Enemys.forEach( enemy => {
+
+        ctx.fillRect(enemy.x,enemy.y, enemy.width, enemy.height);
+    });
+}
 function gameLoop(){
     updateGame();
 
@@ -38,48 +102,11 @@ function gameLoop(){
 
     requestAnimationFrame(gameLoop);
 }
-async function delayFrames(frames) {
-  for (let i = 0; i < frames; i++) {
-    await nextFrame();
-  }
-}
-
-function updateGame(){
-    Enemys.forEach( enemy => {
-        enemy.x -= enemy.speed;
-        if (enemy.x < -50) enemy.x = canvas.width + Math.random * 300;
-});
-    scoreElement.textContent = `stability level = ${score}`;
-
-    if (isJump){
-        playerY -= 10
-    }
-}
-
-function drawGame(){
-    ctx.clearRect(0, 0,canvas.width, canvas.height);
-
-    ctx.fillStyle = 'blue';
-    ctx.fillRect(50, playerY, 50, 50);
-
-    ctx.fillStyle = 'red';
-    Enemys.forEach( enemy => {
-
-        ctx.fillRect(enemy.x,enemy.y, enemy.width, enemy.height);
-    });
-}
-document.addEventListener('keydown',async (event) =>{
+document.addEventListener('keydown',(event) =>{
     if(event.code === "Space" && !isJump)
         isJump = true;
-        for(let i=0; i,20; i++) {
-        playerY -= 5;
-        await nextFrame();
-            }
-        for(let i=0; i,20; i++) {
-            playerY -= 5;
-            await nextFrame();
-        }
-        isJump = false;
+
+        velocityY = -10;
 });</script>
 </body>
 </html>
