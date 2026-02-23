@@ -18,7 +18,7 @@ const scoreElement = document.getElementById('score');
 let score = 0;
 let playerY = 150;
 let isJump  = false;
-let playerSize;
+let playerSize = 50;
 const gravity = 0.5;
 let velocityY = 0;
 let Enemys= [
@@ -45,7 +45,7 @@ function bottomLine(){
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(0, canvas.height - 1);
-    ctx.lineTo(canvas.width, canvas.height - 1);
+    ctx.lineTo(canvas.width, canvas.height);
     ctx.stroke();
 }
 function updateGame(){
