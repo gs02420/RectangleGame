@@ -23,24 +23,17 @@ let playerSize = 50;
 const gravity = 0.25;
 let velocityY = 0;
 let Enemys= [
-    new Obstacle(50, 50, canvas.width,canvas.height - 50,enemySpeed),
-    new Obstacle(50, 50, canvas.width + 300,canvas.height - 50,enemySpeed)
+    new Obstacle(50, 50,canvas.width,enemySpeed),
+    new Obstacle(50, 50,canvas.width + 300,enemySpeed)
 ];
-function Obstacle(width, height, x, y, speed){
+function Obstacle(width, height, x, speed){
   this.speed = speed;
   this.width = width;
   this.height = height;
   this.x = x;
   this.y = canvas.height - height;
 }
-const nextFrame = () => new Promise(requestAnimationFrame);
 
-
-async function delayFrames(frames) {
-  for (let i = 0; i < frames; i++) {
-    await nextFrame();
-  }
-}
 function bottomLine(){
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;
@@ -49,24 +42,6 @@ function bottomLine(){
     ctx.lineTo(canvas.width, canvas.height);
     ctx.stroke();
 }
-function newEnemy(){
-    if (score >= 10){
-        Enemys =     [
-             new Obstacle(50, 50, canvas.width,canvas.height - 50,enemySpeed),
-    new Obstacle(50, 50, canvas.width + 300,canvas.height - 50,enemySpeed),
-    new Obstacle(50, 50, canvas.width + 600,canvas.height - 50,enemySpeed)];
-    }else{
-        Enemys= [
-    new Obstacle(50, 50, canvas.width,canvas.height - 50,enemySpeed),
-    new Obstacle(50, 50, canvas.width + 300,canvas.height - 50,enemySpeed)
-];
-    }};
-function newTwoenemy(){
-    if (score >= 10){
-        enemySpeed = 3
-    }else{
-        enemySpeed = 2
-    }};
 function updateGame(){
             if (isJump) {
             velocityY += gravity;
@@ -80,8 +55,9 @@ function updateGame(){
         } else {
              playerY = canvas.height - playerSize;
         }
-    newEnemy();
-    newTwoenemy();
+if (score >= 10 && enemySpeed < 3) {
+   enemySpeed < 3
+}
     Enemys.forEach( enemy => {
         enemy.x -= enemy.speed;
                     if (enemy.x < -enemy.width) {
