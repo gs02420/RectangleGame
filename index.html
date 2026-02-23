@@ -48,6 +48,17 @@ function bottomLine(){
     ctx.lineTo(canvas.width, canvas.height);
     ctx.stroke();
 }
+function newEnemy(){
+    if (score => 10){
+        Enemys =     [new Obstical(50, 50, canvas.width,canvas.height - 50,2),
+    new Obstical(50, 50, canvas.width + 300,canvas.height - 50,2),
+    new Obstical(50, 50, canvas.width + 600,canvas.height - 50,2)];
+    }else{
+        Enemys= [
+    new Obstical(50, 50, canvas.width,canvas.height - 50,2),
+    new Obstical(50, 50, canvas.width + 300,canvas.height - 50,2)
+];
+    }};
 function updateGame(){
             if (isJump) {
             velocityY += gravity;
@@ -61,7 +72,7 @@ function updateGame(){
         } else {
              playerY = canvas.height - playerSize;
         }
-
+    newEnemy();
     Enemys.forEach( enemy => {
         enemy.x -= enemy.speed;
                     if (enemy.x < -enemy.width) {
