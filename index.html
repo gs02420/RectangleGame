@@ -23,11 +23,11 @@ let playerSize = 50;
 const gravity = 0.25;
 let velocityY = 0;
 let Enemys= [
-    new Obstacle(50, 50,canvas.width,enemySpeed),
-    new Obstacle(50, 50,canvas.width + 300,enemySpeed)
+    new Obstacle(50, 50,canvas.width),
+    new Obstacle(50, 50,canvas.width + 300)
 ];
-function Obstacle(width, height, x, speed){
-  this.speed = speed;
+function Obstacle(width, height, x){
+  this.speed = enemySpeed;
   this.width = width;
   this.height = height;
   this.x = x;
@@ -56,7 +56,10 @@ function updateGame(){
              playerY = canvas.height - playerSize;
         }
 if (score >= 10 && enemySpeed < 3) {
-   enemySpeed < 3
+   enemySpeed = 3;
+};
+if (score < 10 && enemySpeed >= 3) {
+    enemySpeed = 2;
 }
     Enemys.forEach( enemy => {
         enemy.x -= enemy.speed;
