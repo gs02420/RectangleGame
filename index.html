@@ -15,6 +15,7 @@
 const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
 
+let enemySpeed = 2;
 let score = 0;
 let playerY = 150;
 let isJump  = false;
@@ -22,10 +23,10 @@ let playerSize = 50;
 const gravity = 0.25;
 let velocityY = 0;
 let Enemys= [
-    new Obstical(50, 50, canvas.width,canvas.height - 50,2),
-    new Obstical(50, 50, canvas.width + 300,canvas.height - 50,2)
+    new Obstacle(50, 50, canvas.width,canvas.height - 50,enemySpeed),
+    new Obstacle(50, 50, canvas.width + 300,canvas.height - 50,enemySpeed)
 ];
-function Obstical(width, height, x, y, speed){
+function Obstacle(width, height, x, y, speed){
   this.speed = speed;
   this.width = width;
   this.height = height;
@@ -49,15 +50,22 @@ function bottomLine(){
     ctx.stroke();
 }
 function newEnemy(){
-    if (score => 10){
-        Enemys =     [new Obstical(50, 50, canvas.width,canvas.height - 50,2),
-    new Obstical(50, 50, canvas.width + 300,canvas.height - 50,2),
-    new Obstical(50, 50, canvas.width + 600,canvas.height - 50,2)];
+    if (score >= 10){
+        Enemys =     [
+             new Obstacle(50, 50, canvas.width,canvas.height - 50,enemySpeed),
+    new Obstacle(50, 50, canvas.width + 300,canvas.height - 50,enemySpeed),
+    new Obstacle(50, 50, canvas.width + 600,canvas.height - 50,enemySpeed)];
     }else{
         Enemys= [
-    new Obstical(50, 50, canvas.width,canvas.height - 50,2),
-    new Obstical(50, 50, canvas.width + 300,canvas.height - 50,2)
+    new Obstacle(50, 50, canvas.width,canvas.height - 50,enemySpeed),
+    new Obstacle(50, 50, canvas.width + 300,canvas.height - 50,enemySpeed)
 ];
+    }};
+function newTwoenemy(){
+    if (score >= 10){
+        enemySpeed = 3
+    }else{
+        enemySpeed = 2
     }};
 function updateGame(){
             if (isJump) {
@@ -73,6 +81,7 @@ function updateGame(){
              playerY = canvas.height - playerSize;
         }
     newEnemy();
+    newTwoenemy();
     Enemys.forEach( enemy => {
         enemy.x -= enemy.speed;
                     if (enemy.x < -enemy.width) {
