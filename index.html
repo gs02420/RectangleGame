@@ -96,7 +96,8 @@ let enemySpeed = Math.floor(score/10) + 2;
     Enemys.forEach( enemy => {
         enemy.speed = enemySpeed;
         enemy.x -= enemy.speed;
-
+        
+        enemyRespawn();
     if(
         50 < enemy.x + enemy.width &&
         50 + playerSize > enemy.x && playerY < enemy.y + enemy.height && playerY + playerSize > enemy.y
