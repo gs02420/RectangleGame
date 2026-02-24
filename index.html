@@ -55,7 +55,7 @@ if (score >= 5 && Enemys.length < 3) {
     let toClose = false;
     Enemys.forEach(enemy => {
     if (Math.abs(enemy.x - newX) < MIN_ENEMY_GAP) {
-    tooClose = true;}
+    toClose = true;}
 });
 if(!toClose){
 Enemys.push(
@@ -65,12 +65,12 @@ Enemys.push(
 Enemys.pop();
 };
 }
-function enemyRespawn() {
+function enemyRespawn(enemy) {
         if (enemy.x < -enemy.width) {
     let newX = canvas.width + Math.random() * 200 + 100;
     Enemys.forEach(otherEnemy => {
         if(otherEnemy !== enemy && Math.abs(otherEnemy.x - newX) < MIN_ENEMY_GAP) {
-    newX = otherEnemy.x + MIN_ENEMY_GAP + Math.random() * 100;
+    newX = otherEnemy.x + enemyGap + Math.random() * 100;
 }
             });
     enemy.x = newX;
@@ -97,7 +97,7 @@ let enemySpeed = Math.floor(score/10) + 2;
         enemy.speed = enemySpeed;
         enemy.x -= enemy.speed;
         
-        enemyRespawn();
+        enemyRespawn(enemy);
     if(
         50 < enemy.x + enemy.width &&
         50 + playerSize > enemy.x && playerY < enemy.y + enemy.height && playerY + playerSize > enemy.y
