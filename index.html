@@ -64,14 +64,14 @@ if (score < 10 && enemySpeed >= 3) {
     enemySpeed = 2;
 }
 if (score >= 5 && enemyAmount <= 2) {
-    Enemys.push = (
+    Enemys.push(
         new Obstacle(50,50,canvas.width + 600));
         enemyAmount = 3;
 };
 if (score <= 5 && enemyAmount >= 3) {
 Enemys.pop();
 enemyAmount = 2;
-}
+};
     Enemys.forEach( enemy => {
         enemy.x -= enemy.speed;
                     if (enemy.x < -enemy.width) {
