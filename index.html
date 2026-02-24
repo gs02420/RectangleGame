@@ -10,15 +10,19 @@
     <h1>Journey To Mental Stability!</h1>
     <canvas id="gameCanvas" width="600" height="400"></canvas>
     <p id="score">Stability level = 0</p>
+    <p id="highScore">Highest stability level = 0</p>
 
     <script>
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
+const highElement = document.getElementById('highScore');
+const enemyGap = 250;
 let enemyAmount  =2;
 let enemySpeed = 2;
 let score = 0;
+let highScore = 0;
 let playerY = 150;
 let isJump  = false;
 let playerSize = 50;
@@ -44,6 +48,35 @@ function bottomLine(){
     ctx.lineTo(canvas.width, canvas.height);
     ctx.stroke();
 }
+function enemySpawn() {
+if (score >= 5 && Enemys.length < 3) {
+    let newX = canvas.width + Math.random() * 200 + 100;
+
+    let toClose = false;
+    Enemys.forEach(enemy => {
+    if (Math.abs(enemy.x - newX) < MIN_ENEMY_GAP) {
+    tooClose = true;}
+});
+if(!toClose){
+Enemys.push(
+        new Obstacle(50,50,canvas.width + 600));
+}
+}else if (score < 5 && Enemys.length > 2) {
+Enemys.pop();
+};
+}
+function enemyRespawn() {
+        if (enemy.x < -enemy.width) {
+    let newX = canvas.width + Math.random() * 200 + 100;
+    Enemys.forEach(otherEnemy => {
+        if(otherEnemy !== enemy && Math.abs(otherEnemy.x - newX) < MIN_ENEMY_GAP) {
+    newX = otherEnemy.x + MIN_ENEMY_GAP + Math.random() * 100;
+}
+            });
+    enemy.x = newX;
+    score++;
+                    }
+}
 function updateGame(){
             if (isJump) {
             velocityY += gravity;
@@ -58,25 +91,20 @@ function updateGame(){
              playerY = canvas.height - playerSize;
         }
 let enemySpeed = Math.floor(score/10) + 2;
-if (score >= 5 && Enemys.length < 3) {
-    Enemys.push(
-        new Obstacle(50,50,canvas.width + 600));
-}else if (score < 5 && Enemys.length > 2) {
-Enemys.pop();
-};
+
+    enemySpawn();
     Enemys.forEach( enemy => {
         enemy.speed = enemySpeed;
         enemy.x -= enemy.speed;
-                    if (enemy.x < -enemy.width) {
-                enemy.x = canvas.width + Math.random() * 200 + 100;
-                score++;
-                    }
+
     if(
         50 < enemy.x + enemy.width &&
         50 + playerSize > enemy.x && playerY < enemy.y + enemy.height && playerY + playerSize > enemy.y
     ) {
+        highScore = score;
         score = 0;
         console.log ("Collision",score)
+        highElement.textContent = `Highest stability level = ${highScore}`;
     }
 });
     scoreElement.textContent = `stability level = ${score}`;
