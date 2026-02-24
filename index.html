@@ -18,7 +18,7 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
 const highElement = document.getElementById('highScore');
-const enemyGap = 250;
+const enemyGap = 300;
 let enemyAmount  =2;
 let enemySpeed = 2;
 let score = 0;
@@ -29,8 +29,8 @@ let playerSize = 50;
 const gravity = 0.25;
 let velocityY = 0;
 let Enemys= [
-    new Obstacle(50, 50,canvas.width),
-    new Obstacle(50, 50,canvas.width + 300)
+    new Obstacle(50, 50,canvas.width + 100),
+    new Obstacle(50, 50,canvas.width + 100 + enemyGap)
 ];
 function Obstacle(width, height, x){
   this.speed = 2;
@@ -59,7 +59,7 @@ if (score >= 5 && Enemys.length < 3) {
 });
 if(!toClose){
 Enemys.push(
-        new Obstacle(50,50,canvas.width + 600));
+        new Obstacle(50,50,canvas.width + 300));
 }
 }else if (score < 5 && Enemys.length > 2) {
 Enemys.pop();
@@ -74,7 +74,7 @@ function enemyRespawn(enemy) {
             maxRight = otherEnemy.x;
 }
             });
-    enemy.x = maxRight + enemyGap + Math.random * 100;
+    enemy.x = maxRight + enemyGap + Math.random() * 100;
     score++;
                     }
 }
@@ -105,6 +105,9 @@ let enemySpeed = Math.floor(score/10) + 2;
     ) {
         highScore = score;
         score = 0;
+        Enemys[0].x = canvas.width + 100;
+        Enemys[1].x = canvas.width + 100 + enemyGap; 
+        if (Enemys[2]) Enemys[2].x = canvas.width + 100 + enemyGap * 2;    
         console.log ("Collision",score)
         highElement.textContent = `Highest stability level = ${highScore}`;
     }
