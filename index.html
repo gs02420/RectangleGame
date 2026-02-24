@@ -29,7 +29,7 @@ let Enemys= [
     new Obstacle(50, 50,canvas.width + 300)
 ];
 function Obstacle(width, height, x){
-  this.speed = enemySpeed;
+  this.speed = 2;
   this.width = width;
   this.height = height;
   this.x = x;
@@ -57,7 +57,7 @@ function updateGame(){
         } else {
              playerY = canvas.height - playerSize;
         }
-enemySpeed = Math.floor(score/10);
+let enemySpeed = Math.floor(score/10) + 2;
 if (score >= 5 && Enemys.length < 3) {
     Enemys.push(
         new Obstacle(50,50,canvas.width + 600));
@@ -65,7 +65,7 @@ if (score >= 5 && Enemys.length < 3) {
 Enemys.pop();
 };
     Enemys.forEach( enemy => {
-        enemy.speed = enemySpeed
+        enemy.speed = enemySpeed;
         enemy.x -= enemy.speed;
                     if (enemy.x < -enemy.width) {
                 enemy.x = canvas.width + Math.random() * 200 + 100;
