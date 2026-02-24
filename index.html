@@ -54,7 +54,7 @@ if (score >= 5 && Enemys.length < 3) {
 
     let toClose = false;
     Enemys.forEach(enemy => {
-    if (Math.abs(enemy.x - newX) < MIN_ENEMY_GAP) {
+    if (Math.abs(enemy.x - newX) < enemyGap) {
     toClose = true;}
 });
 if(!toClose){
@@ -68,12 +68,13 @@ Enemys.pop();
 function enemyRespawn(enemy) {
         if (enemy.x < -enemy.width) {
     let newX = canvas.width + Math.random() * 200 + 100;
+    let maxRight = 0;
     Enemys.forEach(otherEnemy => {
-        if(otherEnemy !== enemy && Math.abs(otherEnemy.x - newX) < MIN_ENEMY_GAP) {
-    newX = otherEnemy.x + enemyGap + Math.random() * 100;
+        if(otherEnemy.x > maxRight){
+            maxRight = otherEnemy.x;
 }
             });
-    enemy.x = newX;
+    enemy.x = maxRight + enemyGap + Math.random * 100;
     score++;
                     }
 }
