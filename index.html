@@ -57,12 +57,7 @@ function updateGame(){
         } else {
              playerY = canvas.height - playerSize;
         }
-if (score >= 10 && enemySpeed < 3) {
-   enemySpeed = 3;
-};
-if (score < 10 && enemySpeed >= 3) {
-    enemySpeed = 2;
-}
+enemySpeed = Math.floor(score/10);
 if (score >= 5 && Enemys.length < 3) {
     Enemys.push(
         new Obstacle(50,50,canvas.width + 600));
@@ -70,6 +65,7 @@ if (score >= 5 && Enemys.length < 3) {
 Enemys.pop();
 };
     Enemys.forEach( enemy => {
+        enemy.speed = enemySpeed
         enemy.x -= enemy.speed;
                     if (enemy.x < -enemy.width) {
                 enemy.x = canvas.width + Math.random() * 200 + 100;
