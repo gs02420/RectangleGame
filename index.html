@@ -28,10 +28,12 @@ let isJump  = false;
 let playerSize = 50;
 const gravity = 0.25;
 let velocityY = 0;
+let currentPlatform = null;
 let Enemys= [
     new Obstacle(50, 50,canvas.width + 100),
     new Obstacle(50, 50,canvas.width + 100 + enemyGap)
 ];
+let gameOver = false;
 function Obstacle(width, height, x){
   this.speed = 2;
   this.width = width;
@@ -39,7 +41,13 @@ function Obstacle(width, height, x){
   this.x = x;
   this.y = canvas.height - height;
 }
-
+function findValidSpawnX() {
+let newX;
+let toClose = true;
+while (toClose) {
+    
+}
+}
 function bottomLine(){
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;
@@ -79,39 +87,74 @@ function enemyRespawn(enemy) {
                     }
 }
 function updateGame(){
-            if (isJump) {
+            if (isJump || currentPlatform === null) {
             velocityY += gravity;
             playerY += velocityY;
-
-            if (playerY >= canvas.height - playerSize) {
-                playerY = canvas.height - playerSize;
-                isJump = false;
-                velocityY = 0;
             }
-        } else {
-             playerY = canvas.height - playerSize;
+            const groundLevel = canvas.height - playerSize
+                    if (playerY >= groundLevel && currentPlatform === null) {
+            playerY = groundLevel;
+            isJump = false;
+            velocityY = 0;
         }
+        
 let enemySpeed = Math.floor(score/10) + 2;
 
     enemySpawn();
+    let onAPlatform = false;
     Enemys.forEach( enemy => {
         enemy.speed = enemySpeed;
         enemy.x -= enemy.speed;
         
         enemyRespawn(enemy);
-    if(
-        50 < enemy.x + enemy.width &&
-        50 + playerSize > enemy.x && playerY < enemy.y + enemy.height && playerY + playerSize > enemy.y
-    ) {
+            
+
+        const pLeft = 50;
+        const pRight = pLeft + playerSize;
+        const pTop = playerY;
+        const pBottom = playerY + playerSize;
+        const eLeft = enemy.x;
+        const eRight = enemy.x + enemy.width;
+        const eTop = enemy.y;
+        const eBottom = enemy.y + enemy.height;
+
+               const horizontalOverlap = pRight > eLeft && pLeft < eRight;
+        const verticalOverlap = pBottom > eTop && pTop < eBottom;
+
+        if (horizontalOverlap && verticalOverlap) {
+
+const wasAbove = (pBottom - velocityY) <= eTop;
+
+            if (velocityY >= 0 && wasAbove) {
+                playerY = eTop - playerSize;
+                velocityY = 0;
+                isJump = false;
+                onAPlatform = true;
+                currentPlatform = enemy;
+            } else {
+                                gameOver = true;
+        }
+    }
+}
+);
+                if (gameOver) {
         highScore = score;
         score = 0;
         Enemys[0].x = canvas.width + 100;
-        Enemys[1].x = canvas.width + 100 + enemyGap; 
-        if (Enemys[2]) Enemys[2].x = canvas.width + 100 + enemyGap * 2;    
-        console.log ("Collision",score)
+        Enemys[1].x = canvas.width + 100 + enemyGap;
+        if (Enemys[2]) Enemys[2].x = canvas.width + 100 + enemyGap * 2;
+        console.log("Collision", score);
         highElement.textContent = `Highest stability level = ${highScore}`;
+        playerY = canvas.height - playerSize;
+        currentPlatform = null;
     }
-});
+        if (onAPlatform) {
+ 
+    } else if (currentPlatform !== null) {
+        if (pRight <= currentPlatform.x || pLeft >= (currentPlatform.x + currentPlatform.width)) {
+            currentPlatform = null;
+        }
+    }
     scoreElement.textContent = `stability level = ${score}`;
 
 
